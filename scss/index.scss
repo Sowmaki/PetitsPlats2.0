@@ -1,0 +1,223 @@
+@import 'commons.scss';
+@import 'card.scss';
+
+header {
+  @include flex-layout(normal, center, column);
+  background-image: url("../assets/Hero.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 667px;
+  width: 100%;
+  padding: 3.5% 4.5%;
+  box-sizing: border-box;
+
+  .header-top {
+    width: 100%;
+    text-align: left;
+  }
+
+  .logo {
+    width: 207px;
+  }
+
+  .tagline {
+    text-align: center;
+    width: 62%;
+    margin-top: 12%;
+    text-transform: uppercase;
+    color: $main-color;
+    font-size: 2.75rem;
+  }
+
+  .searchbar {
+    @include flex-layout(space-between, center, row);
+    width: 66%;
+    background-color: white;
+    border-radius: 11px;
+    margin-top: 2%;
+
+    &__input {
+      border: none;
+      font-family: $main-font;
+      font-weight: 400;
+      font-size: 1rem;
+      color: $grey;
+      margin: 2.5% 3.5%;
+      width: 100%;
+      outline: none;
+      caret-color: $light-grey;
+    }
+
+    &__loop-container {
+      margin: 1% 1%;
+    }
+
+    &__loop-container:active img {
+      content: url(../assets/loop/loop.active.png)
+    }
+  }
+}
+
+.main-top {
+  @include flex-layout(space-between, baseline, row);
+}
+
+.recipes-number {
+  font-family: $title-font;
+  font-size: 1.313rem
+}
+
+.advanced {
+  @include flex-layout(space-between, center, row);
+  margin-top: 1em;
+  gap: 9%;
+
+  &__filters {}
+
+  &__filter {
+    position: relative;
+    background-color: white;
+    border-radius: 11px;
+    padding: 1em;
+    cursor: pointer;
+  }
+
+  &__dropdown-menu {
+    background-color: white;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    display: none;
+    position: absolute;
+    top: 80%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 10;
+    padding: 1em;
+    box-sizing: border-box;
+  }
+
+  .active {
+    display: block;
+  }
+
+  &__labelNtrigger {
+    @include flex-layout(space-between, center, row);
+    gap: 63px;
+    font-size: 1rem;
+  }
+
+  &__searchbar {
+    @include flex-layout(space-between, center, row);
+    border: 1px solid $light-grey;
+    border-radius: 2px;
+    gap: 1em;
+    padding: 0.5em;
+
+    input {
+      border: none;
+      font-size: 0.875rem;
+      color: $grey;
+      caret-color: $light-grey;
+      outline: none;
+      width: 100%;
+    }
+
+    .fa-solid {
+      color: $grey
+    }
+
+    .fa-xmark {
+      font-size: 0.7rem;
+    }
+
+    .loop {
+      height: 0.875rem;
+    }
+  }
+
+}
+
+/***********************Card ***********************/
+
+.results {
+  margin-top: 3.8vw;
+  @include flex-layout(left, center, row);
+  flex-wrap: wrap;
+  gap: 3.8%;
+}
+
+.recipe {
+  margin-bottom: 5.3%;
+  width: 30.7%;
+  background-color: white;
+  border-radius: 21px;
+  overflow: hidden;
+  box-shadow: 4px 34px 30px rgba(0, 0, 0, 0.04);
+
+  &__img {
+    object-fit: cover;
+    object-position: 50% -90px;
+    width: 100%;
+    ;
+  }
+
+  &__duration {
+    position: absolute;
+    z-index: 99;
+    top: 1.5vw;
+    right: 1.5vw;
+    border-radius: 1.8vw;
+    background-color: $main-color;
+    padding: 0.5em 1em;
+    font-size: 0.75;
+  }
+
+  &__name {
+    font-size: 1.125rem;
+  }
+
+  h3 {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $grey;
+    margin-bottom: 1em;
+  }
+
+  &__description {
+    font-size: 0.875rem;
+  }
+
+  &__ingredients {
+    columns: 2;
+  }
+
+  &__ingredient-item {
+    margin-bottom: 1em;
+    @include flex-layout(center, left, column);
+  }
+
+  &__ingredient {
+    font-size: 0.875rem;
+
+    &--quantity {
+      color: grey;
+    }
+  }
+}
+
+.recipe-container {
+  &__top {
+    overflow: hidden;
+    width: 100%;
+    height: 17.5vw;
+    position: relative;
+  }
+
+  &__bottom {
+    padding: 2.2vw 1.7vw 4.2vw;
+    @include flex-layout(center, left, column);
+    gap: 2em;
+  }
+}

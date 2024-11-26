@@ -1,0 +1,33 @@
+* {
+  font-family: "Manrope";
+}
+
+body {
+  margin: 0;
+  background-color: #E5E5E5;
+}
+
+main {
+  background-color: #E5E5E5;
+  padding: 0 7%;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2 {
+  font-family: "Anton";
+  font-weight: 400;
+}
+
+ul {
+  list-style-type: none;
+}/*# sourceMappingURL=commons.css.map */

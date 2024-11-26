@@ -1,0 +1,52 @@
+// Couleurs
+$main-color: #FFD15B;
+$background: #E5E5E5;
+$grey: #7A7A7A;
+$light-grey: #C6C6C6;
+
+// Typographies
+$title-font: 'Anton';
+$main-font: 'Manrope';
+
+// Mixins
+@mixin flex-layout($justify: center, $align: center, $direction: column) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+* {
+  font-family: $main-font;
+}
+
+body {
+  margin: 0;
+  background-color: $background;
+}
+
+main {
+  background-color: $background;
+  padding: 0 7%;
+}
+
+
+h1,
+h2,
+h3,
+p,
+li,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2 {
+  font-family: $title-font;
+  font-weight: 400;
+}
+
+ul {
+  list-style-type: none;
+}
