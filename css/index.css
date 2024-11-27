@@ -220,6 +220,7 @@ header .searchbar__loop-container:active img {
 }
 
 .recipe {
+  max-height: 60vw;
   margin-bottom: 5.3%;
   width: 30.7%;
   background-color: white;
@@ -230,8 +231,9 @@ header .searchbar__loop-container:active img {
 .recipe__img {
   -o-object-fit: cover;
      object-fit: cover;
-  -o-object-position: 50% -90px;
-     object-position: 50% -90px;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+  height: 250px;
   width: 100%;
 }
 .recipe__duration {
@@ -255,7 +257,9 @@ header .searchbar__loop-container:active img {
   margin-bottom: 1em;
 }
 .recipe__description {
+  max-height: 5.5em;
   font-size: 0.875rem;
+  overflow: hidden;
 }
 .recipe__ingredients {
   -moz-columns: 2;
@@ -273,8 +277,13 @@ header .searchbar__loop-container:active img {
 }
 .recipe__ingredient--quantity {
   color: grey;
+  font-size: 0.875rem;
 }
 
+.recipe-container {
+  width: 100%;
+  height: 100%;
+}
 .recipe-container__top {
   overflow: hidden;
   width: 100%;

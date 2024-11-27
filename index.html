@@ -20,7 +20,8 @@
     <nav class="header-top"><img class="logo" src="assets/Logo.svg" alt="logo Les Petits Plats" class="logo"></nav>
     <h1 class="tagline">Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
     <div class="searchbar">
-      <input type="text" class="searchbar__input" placeholder="Rechercher une recette, un ingrédient..." minlength="3">
+      <input id="main-searchbar-input" type="text" class="searchbar__input"
+        placeholder="Rechercher une recette, un ingrédient..." minlength="3">
       <div class="searchbar__loop-container" tabindex="0"><img src="assets/loop/loop.png" aria-label="Rechercher"
           class="searchbar__loop"></div>
     </div>
@@ -126,6 +127,7 @@
     </section>
   </main>
   <script type="module" src="utils/dropdownFilter.js"></script>
+  <script type="module" src="utils/research.js"></script>
 </body>
 
 </html>
