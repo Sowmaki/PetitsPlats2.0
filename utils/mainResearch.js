@@ -1,6 +1,6 @@
 import { recipesTemplate } from '../templates/card.js';
 
-async function getAllRecipes() {
+export async function getAllRecipes() {
   try {
     const response = await fetch('datas/recipes.json')
     if (!response.ok) {
@@ -38,30 +38,35 @@ async function getRecipesFromResearch() {
     // Initialisation du tableau des recettes sélectionnées
     let selectedRecipes = [];
 
-    // Parcourir toutes les recettes
-    allRecipes.forEach(recipe => {
+    // Parcourir toutes les recettes si le champ contient au moins 3 caractères
+    if (inputValue.length < 3) {
+      console.log('3 caracteres minimum');
+      return
+    } else {
+      allRecipes.forEach(recipe => {
 
-      // Vérifier si un ingrédient correspond à inputValue
-      const hasMatchingIngredient = recipe.ingredients.some(ingredient =>
-        ingredient.ingredient.toLowerCase().includes(inputValue)
-      );
+        // Vérifier si un ingrédient correspond à inputValue
+        const hasMatchingIngredient = recipe.ingredients.some(ingredient =>
+          ingredient.ingredient.toLowerCase().includes(inputValue)
+        );
 
-      // Vérifier si le titre contient inputValue
-      const hasMatchingTitle = recipe.name.toLowerCase().includes(inputValue);
+        // Vérifier si le titre contient inputValue
+        const hasMatchingTitle = recipe.name.toLowerCase().includes(inputValue);
 
-      // Vérifier si la description contient inputValue
-      const hasMatchingDescription = recipe.description.toLowerCase().includes(inputValue);
+        // Vérifier si la description contient inputValue
+        const hasMatchingDescription = recipe.description.toLowerCase().includes(inputValue);
 
-      // Ajouter la recette à selectedRecipes si au moins une condition est vraie et qu'elle n'y est pas déjà
-      if ((hasMatchingIngredient || hasMatchingTitle || hasMatchingDescription) &&
-        !selectedRecipes.includes(recipe)) {
-        selectedRecipes.push(recipe);
-      }
-    });
+        // Ajouter la recette à selectedRecipes si au moins une condition est vraie et qu'elle n'y est pas déjà
+        if ((hasMatchingIngredient || hasMatchingTitle || hasMatchingDescription) &&
+          !selectedRecipes.includes(recipe)) {
+          selectedRecipes.push(recipe);
+        }
+      });
+    }
 
     // Afficher les recettes filtrées si le tableau n'est pas vide
-    if (selectedRecipes.length < 3) {
-      console.log('3 caracteres minimum');
+    if (selectedRecipes.length < 0) {
+      console.log('pas de recettes trouvées');
       return
     } else {
       displayRecipesData(selectedRecipes);

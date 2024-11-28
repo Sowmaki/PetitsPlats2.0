@@ -1,8 +1,11 @@
-const filter = document.querySelector('.advanced__filter');
+const filters = document.querySelectorAll('.advanced__filter');
 const dropdown = document.querySelector('.advanced__dropdown-menu');
 
-function dropdownFilter() {
+function dropdownFilter(dropdown) {
   dropdown.classList.toggle('active')
 }
 
-filter.addEventListener('click', () => dropdownFilter())
+filters.forEach(filter => {
+  const dropdown = filter.querySelector('.advanced__dropdown-menu');
+  filter.querySelector('.fa-chevron-down').addEventListener('click', () => dropdownFilter(dropdown))
+});
