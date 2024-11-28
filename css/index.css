@@ -215,11 +215,36 @@ header .searchbar__loop-container:active img {
 }
 .advanced__suggestions .suggestion {
   padding: 0.5em 1em;
+  text-transform: capitalize;
 }
 .advanced__suggestions .suggestion:hover {
   font-weight: 500;
   background-color: #FFD15B;
   background-size: 250%;
+}
+
+/*********************** Labels ********************/
+.main-labels {
+  margin-top: 3.8vw;
+}
+.main-labels .labels {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  gap: 2vw;
+}
+.main-labels .labels__label {
+  font-size: 0.875rem;
+  background-color: #FFD15B;
+  border-radius: 10px;
+  padding: 1em;
+  text-transform: capitalize;
+}
+.main-labels .labels__label span {
+  font-size: 0.875rem;
+  margin-left: 4vw;
+  cursor: pointer;
 }
 
 /***********************Card ***********************/
