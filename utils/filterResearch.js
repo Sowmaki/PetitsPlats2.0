@@ -37,6 +37,8 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
   console.log(`Tous les éléments pour ${filter.value} :`, filter.allElements);
 });
 
+
+
 const dropdownMenu = document.querySelector('.advanced__dropdown-menu');
 const inputIngredients = document.getElementById('ingredients')
 let selectedIngredients = []
