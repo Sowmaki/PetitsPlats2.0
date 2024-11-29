@@ -26,83 +26,82 @@ export async function displayRecipesData(selectedRecipes) {
 }
 
 export async function getRecipesFromResearch() {
-  const input = document.getElementById('main-searchbar-input');
-  const allRecipes = await getAllRecipes();
+  const allRecipes = await getAllRecipes(); // Charger toutes les recettes
+  const inputValue = input.value.toLowerCase(); // Récupérer la valeur de l'input
+  const isInputValid = inputValue.length >= 3; // Vérifier si l'input contient au moins 3 caractères
+  const allLabels = document.querySelectorAll('.labels__label'); // Récupérer les étiquettes
 
-  input.addEventListener('input', () => {
-    const inputValue = input.value.trim().toLowerCase(); // Nettoyage de l'input
-    const allLabels = document.querySelectorAll('.labels__label');
-    const selectedLabels = [];
-    for (let i = 0; i < allLabels.length; i++) {
-      selectedLabels.push(allLabels[i].innerText.toLowerCase());
+  const selectedLabels = [];
+  for (let i = 0; i < allLabels.length; i++) {
+    selectedLabels.push(allLabels[i].innerText.toLowerCase()); // Convertir en tableau de chaînes en minuscules
+  }
+
+  // Fonction pour vérifier si un tableau satisfait un prédicat pour TOUS ses éléments
+  function arrayAll(array, predicate) {
+    for (let i = 0; i < array.length; i++) {
+      if (!predicate(array[i])) {
+        return false; // Si un élément ne respecte pas le prédicat, retourne false
+      }
     }
-    const isInputValid = inputValue.length >= 3; // Vérifie si l'input est valide
+    return true; // Si tous les éléments respectent le prédicat, retourne true
+  }
 
-    const selectedRecipes = [];
-    for (let i = 0; i < allRecipes.length; i++) {
-      const recipe = allRecipes[i];
+  // Tableau pour stocker les recettes sélectionnées
+  const selectedRecipes = [];
 
-      // Vérifier les ingrédients
-      let ingredientMatches = true; // Suppose au départ que les ingrédients correspondent
-      for (let j = 0; j < recipe.ingredients.length; j++) {
-        const ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
-        const inputMatch = isInputValid ? ingredientName.includes(inputValue) : true;
+  // Parcourir toutes les recettes
+  for (let i = 0; i < allRecipes.length; i++) {
+    const recipe = allRecipes[i];
 
-        // Vérifie que toutes les étiquettes correspondent aux ingrédients
-        let labelMatch = true;
-        if (selectedLabels.length > 0) {
-          for (let k = 0; k < selectedLabels.length; k++) {
-            if (!ingredientName.includes(selectedLabels[k])) {
-              labelMatch = false;
-              break;
-            }
-          }
-        }
+    // Vérification des ingrédients
+    let hasMatchingIngredient = false;
+    for (let j = 0; j < recipe.ingredients.length; j++) {
+      const ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
+      const matchesInput = isInputValid ? ingredientName.includes(inputValue) : true; // Match avec l'input
+      const matchesAllLabels = arrayAll(selectedLabels, (label) => ingredientName.includes(label)); // Match avec toutes les étiquettes
 
-        if (!inputMatch || !labelMatch) {
-          ingredientMatches = false;
-          break;
-        }
-      }
-
-      // Vérifier le titre
-      let titleMatches = isInputValid ? recipe.name.toLowerCase().includes(inputValue) : true;
-      let titleLabelMatch = true;
-      if (selectedLabels.length > 0) {
-        for (let j = 0; j < selectedLabels.length; j++) {
-          if (!recipe.name.toLowerCase().includes(selectedLabels[j])) {
-            titleLabelMatch = false;
-            break;
-          }
-        }
-      }
-
-      // Vérifier la description
-      let descriptionMatches = isInputValid ? recipe.description.toLowerCase().includes(inputValue) : true;
-      let descriptionLabelMatch = true;
-      if (selectedLabels.length > 0) {
-        for (let j = 0; j < selectedLabels.length; j++) {
-          if (!recipe.description.toLowerCase().includes(selectedLabels[j])) {
-            descriptionLabelMatch = false;
-            break;
-          }
-        }
-      }
-
-      // Ajouter la recette si une des conditions est remplie
-      if (
-        ingredientMatches ||
-        (titleMatches && titleLabelMatch) ||
-        (descriptionMatches && descriptionLabelMatch)
-      ) {
-        selectedRecipes.push(recipe);
+      if (matchesInput && matchesAllLabels) {
+        hasMatchingIngredient = true;
+        break; // Si un ingrédient correspond, on peut arrêter la vérification pour ce champ
       }
     }
 
-    // Mettre à jour l'affichage
+    // Vérification du titre
+    let hasMatchingTitle = isInputValid ? recipe.name.toLowerCase().includes(inputValue) : true;
+    let matchesTitleLabels = true;
+    if (selectedLabels.length > 0) {
+      matchesTitleLabels = arrayAll(selectedLabels, (label) => recipe.name.toLowerCase().includes(label)); // Vérifier le titre avec les étiquettes
+    }
+
+    const titleValid = hasMatchingTitle && matchesTitleLabels;
+
+    // Vérification de la description
+    let hasMatchingDescription = isInputValid ? recipe.description.toLowerCase().includes(inputValue) : true;
+    let matchesDescriptionLabels = true;
+    if (selectedLabels.length > 0) {
+      matchesDescriptionLabels = arrayAll(selectedLabels, (label) => recipe.description.toLowerCase().includes(label)); // Vérifier la description avec les étiquettes
+    }
+
+    const descriptionValid = hasMatchingDescription && matchesDescriptionLabels;
+
+    // Ajouter la recette si elle correspond à l'une des conditions
+    if (hasMatchingIngredient || titleValid || descriptionValid) {
+      selectedRecipes.push(recipe);
+    }
+  }
+
+  // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
+  if (selectedRecipes.length === 0) {
+    mainResults.querySelector(".results")?.remove();
+    console.log('Aucune recette trouvée.');
+  } else {
     displayRecipesData(selectedRecipes);
-  });
+  }
 }
+
+
+getRecipesFromResearch();
+
 
 
 
