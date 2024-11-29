@@ -188,6 +188,7 @@ header {
   @include flex-layout(left, center, row);
   flex-wrap: wrap;
   gap: 3.8%;
+  position: relative;
 }
 
 .recipe {
@@ -270,5 +271,19 @@ header {
     padding: 2.2vw 1.7vw 4.2vw;
     @include flex-layout(center, left, column);
     gap: 2em;
+
+    /************************* NoResult ******************/
+
+.no-result {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 22%;
+  text-align: center;
+  font-size: 1.2rem;
+  background-color: $main-color;
+  padding: 2em;
+  border-radius: 15px;
+}
   }
 }
