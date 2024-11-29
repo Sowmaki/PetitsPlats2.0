@@ -4,7 +4,7 @@ export function recipesTemplate(data) {
 
   data.forEach(recipe => {
     // Récupération des données de la recette
-    const imgSrc = `assets/images/${recipe.image}`;
+    const imgSrc = `./assets/images/${recipe.image}`;
     const duration = `${recipe.time}`;
     const title = `${recipe.name}`;
     const description = `${recipe.description}`;
