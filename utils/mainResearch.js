@@ -17,6 +17,7 @@ export async function getAllRecipes() {
 
 const mainResults = document.querySelector(".main-results")
 const input = document.getElementById('main-searchbar-input');
+const noResultDiv = document.querySelector('.no-result');
 
 export async function displayRecipesData(selectedRecipes) {
   mainResults.querySelector(".results")?.remove()
@@ -72,8 +73,11 @@ export async function getRecipesFromResearch() {
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (!selectedRecipes.length) {
     mainResults.querySelector(".results")?.remove()
-    console.log('Aucune recette trouvée.');
+        noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
+    Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
+    noResultDiv.style.display = "block";
   } else {
+    noResultDiv.style.display = "none"
     displayRecipesData(selectedRecipes);
   }
 }
