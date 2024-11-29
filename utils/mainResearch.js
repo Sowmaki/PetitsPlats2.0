@@ -17,6 +17,7 @@ export async function getAllRecipes() {
 
 const mainResults = document.querySelector(".main-results")
 const input = document.getElementById('main-searchbar-input');
+const noResultDiv = document.querySelector('.no-result');
 
 export async function displayRecipesData(selectedRecipes) {
   mainResults.querySelector(".results")?.remove()
@@ -30,6 +31,7 @@ export async function getRecipesFromResearch() {
   const inputValue = input.value.toLowerCase(); // Récupérer la valeur de l'input
   const isInputValid = inputValue.length >= 3; // Vérifier si l'input contient au moins 3 caractères
   const allLabels = document.querySelectorAll('.labels__label'); // Récupérer les étiquettes
+
 
   const selectedLabels = [];
   for (let i = 0; i < allLabels.length; i++) {
@@ -58,7 +60,7 @@ export async function getRecipesFromResearch() {
     for (let j = 0; j < recipe.ingredients.length; j++) {
       const ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
       const matchesInput = isInputValid ? ingredientName.includes(inputValue) : true; // Match avec l'input
-      const matchesAllLabels = arrayAll(selectedLabels, (label) => ingredientName.includes(label)); // Match avec toutes les étiquettes
+      const matchesAllLabels = arrayAll(selectedLabels, (label) => ingredientName.includes(label.toLowerCase())); // Match avec toutes les étiquettes
 
       if (matchesInput && matchesAllLabels) {
         hasMatchingIngredient = true;
@@ -70,7 +72,7 @@ export async function getRecipesFromResearch() {
     let hasMatchingTitle = isInputValid ? recipe.name.toLowerCase().includes(inputValue) : true;
     let matchesTitleLabels = true;
     if (selectedLabels.length > 0) {
-      matchesTitleLabels = arrayAll(selectedLabels, (label) => recipe.name.toLowerCase().includes(label)); // Vérifier le titre avec les étiquettes
+      matchesTitleLabels = arrayAll(selectedLabels, (label) => recipe.name.toLowerCase().includes(label.toLowerCase())); // Vérifier le titre avec les étiquettes
     }
 
     const titleValid = hasMatchingTitle && matchesTitleLabels;
@@ -79,7 +81,7 @@ export async function getRecipesFromResearch() {
     let hasMatchingDescription = isInputValid ? recipe.description.toLowerCase().includes(inputValue) : true;
     let matchesDescriptionLabels = true;
     if (selectedLabels.length > 0) {
-      matchesDescriptionLabels = arrayAll(selectedLabels, (label) => recipe.description.toLowerCase().includes(label)); // Vérifier la description avec les étiquettes
+      matchesDescriptionLabels = arrayAll(selectedLabels, (label) => recipe.description.toLowerCase().includes(label.toLowerCase)); // Vérifier la description avec les étiquettes
     }
 
     const descriptionValid = hasMatchingDescription && matchesDescriptionLabels;
@@ -93,8 +95,12 @@ export async function getRecipesFromResearch() {
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (selectedRecipes.length === 0) {
     mainResults.querySelector(".results")?.remove();
-    console.log('Aucune recette trouvée.');
+
+    noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
+    Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
+    noResultDiv.style.display = "block";
   } else {
+    noResultDiv.style.display = "none"
     displayRecipesData(selectedRecipes);
   }
 }

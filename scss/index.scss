@@ -67,6 +67,8 @@ header {
   font-size: 1.313rem
 }
 
+/************************ Filtres ********************/
+
 .advanced {
   @include flex-layout(space-between, center, row);
   margin-top: 1em;
@@ -188,6 +190,7 @@ header {
   @include flex-layout(left, center, row);
   flex-wrap: wrap;
   gap: 3.8%;
+  position: relative;
 }
 
 .recipe {
@@ -208,7 +211,7 @@ header {
 
   &__duration {
     position: absolute;
-    z-index: 99;
+    z-index: 9;
     top: 1.5vw;
     right: 1.5vw;
     border-radius: 1.8vw;
@@ -271,4 +274,18 @@ header {
     @include flex-layout(center, left, column);
     gap: 2em;
   }
+}
+
+/************************* NoResult ******************/
+
+.no-result {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 22%;
+  text-align: center;
+  font-size: 1.2rem;
+  background-color: $main-color;
+  padding: 2em;
+  border-radius: 15px;
 }
