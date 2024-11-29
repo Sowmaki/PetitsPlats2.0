@@ -140,6 +140,7 @@ header .searchbar__loop-container:active img {
   font-size: 1.313rem;
 }
 
+/************************ Filtres ********************/
 .advanced {
   display: flex;
   justify-content: space-between;
@@ -256,6 +257,7 @@ header .searchbar__loop-container:active img {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 3.8%;
+  position: relative;
 }
 
 .recipe {
@@ -277,7 +279,7 @@ header .searchbar__loop-container:active img {
 }
 .recipe__duration {
   position: absolute;
-  z-index: 99;
+  z-index: 9;
   top: 1.5vw;
   right: 1.5vw;
   border-radius: 1.8vw;
@@ -338,4 +340,17 @@ header .searchbar__loop-container:active img {
   align-items: left;
   flex-direction: column;
   gap: 2em;
+}
+
+/************************* NoResult ******************/
+.no-result {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 22%;
+  text-align: center;
+  font-size: 1.2rem;
+  background-color: #FFD15B;
+  padding: 2em;
+  border-radius: 15px;
 }/*# sourceMappingURL=index.css.map */
