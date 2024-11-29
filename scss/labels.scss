@@ -1,0 +1,26 @@
+@import 'commons.scss';
+
+/*********************** Labels ********************/
+
+.main-labels {
+  margin-top: 3.8vw;
+
+  .labels {
+    @include flex-layout(left, center, row);
+    gap: 2vw;
+
+    &__label {
+      font-size: 0.875rem;
+      background-color: $main-color;
+      border-radius: 10px;
+      padding: 1em;
+      text-transform: capitalize;
+
+      span {
+        font-size: 0.875rem;
+        margin-left: 4vw;
+        cursor: pointer;
+      }
+    }
+  }
+}
