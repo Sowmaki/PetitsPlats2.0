@@ -5,7 +5,12 @@ export function createLabelSearch(element) {
   labelSearch.innerText = `${element.innerText}`
 
   const deleteCross = document.createElement('span');
-  deleteCross.classList.add('fa-solid', 'fa-xmark');
+  deleteCross.classList.add('deleteBtn');
+
+  const icon = document.createElement('i');
+  icon.classList.add('fa-solid', 'fa-xmark');
+
+  deleteCross.appendChild(icon)
 
   labelSearch.appendChild(deleteCross)
   labelsList.appendChild(labelSearch)

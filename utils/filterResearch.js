@@ -1,5 +1,5 @@
 import { createLabelSearch } from "../templates/createLabelsearch.js";
-import { getAllRecipes } from "./mainResearch.js";
+import { getAllRecipes, getRecipesFromResearch } from "./mainResearch.js";
 
 const allRecipes = await getAllRecipes();
 
@@ -45,6 +45,9 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
         // Ajouter une étiquette (label)
         createLabelSearch(suggestion);
 
+        //Mettre à jour les résultats de recherche
+        getRecipesFromResearch()
+
         // Retirer l'élément de `allElements`
         filter.allElements = filter.allElements.filter(el => el !== element);
 
@@ -71,6 +74,7 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
       element.toLowerCase().includes(inputValue)
     );
     displayFilterList(matchingElements);
+
   }
 
   const inputFilter = filter.input;
@@ -96,6 +100,10 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
 
       // Mettre à jour la liste des suggestions
       updateSuggestionsList();
+
+      // Afficher les résultats
+      getRecipesFromResearch()
+
     }
   });
 

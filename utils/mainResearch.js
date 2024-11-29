@@ -7,7 +7,6 @@ export async function getAllRecipes() {
       throw new Error('could not fetch data')
     }
     const data = await response.json()
-    console.log(data);
 
     return data
   }
@@ -17,62 +16,83 @@ export async function getAllRecipes() {
 }
 
 const mainResults = document.querySelector(".main-results")
-// Affiche les medias et leurs données après les avoir créé 
+const input = document.getElementById('main-searchbar-input');
+
 export async function displayRecipesData(selectedRecipes) {
-  ; //recupere l'endroit ou vont etre affichés les medias
-  // supprime l'element medias du main s'il existe deja
   mainResults.querySelector(".results")?.remove()
   // Variable contenant une liste créée à partir du template associé
   const recipesListDOM = recipesTemplate(selectedRecipes);
   mainResults.appendChild(recipesListDOM);
 }
 
-async function getRecipesFromResearch() {
-  const input = document.getElementById('main-searchbar-input');
-  // stocke tout ce que contient notre recipes.json dans une variable
-  const allRecipes = await getAllRecipes();
-  input.addEventListener('input', () => {
-    // récupère la valeur de l'input de saisie 
-    const inputValue = input.value.toLowerCase()
-    //Si l'input n'a pas le minimum de 3 caractères, ne rien faire
-    // Initialisation du tableau des recettes sélectionnées
-    let selectedRecipes = [];
+export async function getRecipesFromResearch() {
+  const allRecipes = await getAllRecipes(); // Charger toutes les recettes
+  const inputValue = input.value.toLowerCase(); // Récupérer la valeur de l'input
+  const isInputValid = inputValue.length >= 3; // Vérifier si l'input contient au moins 3 caractères
+  const allLabels = document.querySelectorAll('.labels__label'); // Récupérer les étiquettes
+  const selectedLabels = [...allLabels].map(label => label.innerText.toLowerCase()); // Convertir en tableau de chaînes en minuscules
 
-    // Parcourir toutes les recettes si le champ contient au moins 3 caractères
-    if (inputValue.length < 3) {
-      console.log('3 caracteres minimum');
-      return
-    } else {
-      allRecipes.forEach(recipe => {
+  // Fonction pour vérifier si un tableau satisfait un prédicat pour TOUS ses éléments
+  function arrayAll(array, predicate) {
+    return array.every(predicate);
+  }
 
-        // Vérifier si un ingrédient correspond à inputValue
-        const hasMatchingIngredient = recipe.ingredients.some(ingredient =>
-          ingredient.ingredient.toLowerCase().includes(inputValue)
-        );
+  // Filtrage des recettes
+  const selectedRecipes = allRecipes.filter(recipe => {
+    // Vérifier les ingrédients
+    const hasMatchingIngredient = recipe.ingredients.some(ingredient => {
+      const ingredientName = ingredient.ingredient.toLowerCase();
+      const matchesInput = isInputValid ? ingredientName.includes(inputValue) : true; // Match avec l'input (ou non si l'input est vide)
+      const matchesAllLabels = arrayAll(selectedLabels, label => ingredientName.includes(label)); // Match avec toutes les étiquettes
+      return matchesInput && matchesAllLabels; // Doit satisfaire les deux conditions
+    });
 
-        // Vérifier si le titre contient inputValue
-        const hasMatchingTitle = recipe.name.toLowerCase().includes(inputValue);
+    // Vérifier le titre
+    const hasMatchingTitle = isInputValid
+      ? recipe.name.toLowerCase().includes(inputValue)
+      : true;
+    const matchesTitleLabels = arrayAll(selectedLabels, label =>
+      recipe.name.toLowerCase().includes(label)
+    );
+    const titleValid = hasMatchingTitle && matchesTitleLabels;
 
-        // Vérifier si la description contient inputValue
-        const hasMatchingDescription = recipe.description.toLowerCase().includes(inputValue);
+    // Vérifier la description
+    const hasMatchingDescription = isInputValid
+      ? recipe.description.toLowerCase().includes(inputValue)
+      : true;
+    const matchesDescriptionLabels = arrayAll(selectedLabels, label =>
+      recipe.description.toLowerCase().includes(label)
+    );
+    const descriptionValid = hasMatchingDescription && matchesDescriptionLabels;
 
-        // Ajouter la recette à selectedRecipes si au moins une condition est vraie et qu'elle n'y est pas déjà
-        if ((hasMatchingIngredient || hasMatchingTitle || hasMatchingDescription) &&
-          !selectedRecipes.includes(recipe)) {
-          selectedRecipes.push(recipe);
-        }
-      });
-    }
-
-    // Afficher les recettes filtrées si le tableau n'est pas vide
-    if (selectedRecipes.length < 0) {
-      console.log('pas de recettes trouvées');
-      return
-    } else {
-      displayRecipesData(selectedRecipes);
-    }
+    // Une recette est valide si elle satisfait l'une des trois conditions
+    return hasMatchingIngredient || titleValid || descriptionValid;
   });
 
+  // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
+  if (!selectedRecipes.length) {
+    mainResults.querySelector(".results")?.remove()
+    console.log('Aucune recette trouvée.');
+  } else {
+    displayRecipesData(selectedRecipes);
+  }
 }
+
+
+
+// const recipeHasIngredient=(recipe,ingredients)=>
+//   recipe.ingredients.some(ingredient => {
+//     const matchesInput = isInputValid && ingredient.ingredient.toLowerCase().includes(inputValue);
+
+//     // Vérifier si les étiquettes existent et si l'ingrédient correspond à une des étiquettes
+//     const matchesLabel = selectedLabels.length > 0 ? selectedLabels.some(label =>
+//       ingredient.ingredient.toLowerCase().includes(label.toLowerCase())
+//     ) : true; // Si aucune étiquette, on ne filtre pas par étiquette
+
+//     return matchesInput && matchesLabel;
+//   });
+
+
+input.addEventListener('input', getRecipesFromResearch)
 
 getRecipesFromResearch()
