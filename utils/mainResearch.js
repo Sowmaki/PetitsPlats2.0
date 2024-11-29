@@ -82,21 +82,6 @@ export async function getRecipesFromResearch() {
   }
 }
 
-
-
-// const recipeHasIngredient=(recipe,ingredients)=>
-//   recipe.ingredients.some(ingredient => {
-//     const matchesInput = isInputValid && ingredient.ingredient.toLowerCase().includes(inputValue);
-
-//     // Vérifier si les étiquettes existent et si l'ingrédient correspond à une des étiquettes
-//     const matchesLabel = selectedLabels.length > 0 ? selectedLabels.some(label =>
-//       ingredient.ingredient.toLowerCase().includes(label.toLowerCase())
-//     ) : true; // Si aucune étiquette, on ne filtre pas par étiquette
-
-//     return matchesInput && matchesLabel;
-//   });
-
-
 input.addEventListener('input', getRecipesFromResearch)
 
 getRecipesFromResearch()
