@@ -7,7 +7,6 @@
   <title>Les Petits Plats</title>
   <link rel="stylesheet" href="./css/index.css">
   <link rel="icon" href="assets/Logo.svg">
-  <!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,18 +16,17 @@
 
 <body>
   <header>
-    <!-- <img src="assets/Hero.png" alt="photo d'un plat de type asiatique" class="hero-image"> -->
-    <nav class="header-top"><img class="logo" src="assets/Logo.svg" alt="logo Les Petits Plats" class="logo"></nav>
+    <nav class="header-top"><img class="logo" src="assets/Logo.svg" alt="logo Les Petits Plats"></nav>
     <h1 class="tagline">Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
     <div class="searchbar">
       <input id="main-searchbar-input" type="text" class="searchbar__input"
         placeholder="Rechercher une recette, un ingrédient..." minlength="3">
-      <div class="searchbar__loop-container" tabindex="0"><img src="assets/loop/loop.png" aria-label="Rechercher"
+      <div class="searchbar__loop-container" tabindex="0"><img src="assets/loop/loop.png" alt="Rechercher"
           class="searchbar__loop"></div>
     </div>
   </header>
   <main>
-    <section class="main-top">
+    <div class="main-top">
       <div class="advanced">
         <div class="advanced__filter advanced__ingredients" tabindex="0">
           <div class="advanced__labelNtrigger">
@@ -39,7 +37,7 @@
             <div class="advanced__searchbar">
               <input type="text" id="ingredients" minlength="3">
               <span class="fa-solid fa-xmark"></span>
-              <img src="assets/loop/littleLoop.svg" class="loop"></img>
+              <img src="assets/loop/littleLoop.svg" class="loop" alt="rechercher">
             </div>
             <ul class="advanced__suggestions"></ul>
           </div>
@@ -53,7 +51,7 @@
             <div class="advanced__searchbar">
               <input type="text" id="appareils" minlength="3">
               <span class="fa-solid fa-xmark"></span>
-              <img src="assets/loop/littleLoop.svg" class="loop"></img>
+              <img src="assets/loop/littleLoop.svg" class="loop" alt="rechercher">
             </div>
             <ul class="advanced__suggestions"></ul>
           </div>
@@ -67,21 +65,21 @@
             <div class="advanced__searchbar">
               <input type="text" id="ustensiles" minlength="3">
               <span class="fa-solid fa-xmark"></span>
-              <img src="assets/loop/littleLoop.svg" class="loop"></img>
+              <img src="assets/loop/littleLoop.svg" class="loop" alt="rechercher">
             </div>
             <ul class="advanced__suggestions"></ul>
           </div>
         </div>
       </div>
       <p class="recipes-number">1500 recettes</p>
-    </section>
-    <section class="main-labels">
+    </div>
+    <div class="main-labels">
       <ul class="labels"></ul>
-    </section>
-    <section class="main-results">
+    </div>
+    <div class="main-results">
       <div class="no-result">lala</div>
       <ul class="results"></ul>
-    </section>
+    </div>
   </main>
   <script type="module" src="utils/filterResearch.js"></script>
   <script type="module" src="utils/mainResearch.js"></script>
