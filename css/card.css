@@ -32,8 +32,114 @@ ul {
   list-style-type: none;
 }
 
+/***********************Card ***********************/
+.main-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: normal;
+}
+
+.results {
+  margin-top: 3.8vw;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3.8%;
+  width: 100%;
+}
+
 .recipe {
-  width: 26%;
+  height: 731px;
+  margin-bottom: 5.3%;
+  width: 30.7%;
   background-color: white;
   border-radius: 21px;
+  overflow: hidden;
+  box-shadow: 4px 34px 30px rgba(0, 0, 0, 0.04);
+}
+@media screen and (min-width: 1800px) {
+  .recipe {
+    width: 21%;
+  }
+}
+@media screen and (min-width: 2560px) {
+  .recipe {
+    width: 16.5%;
+  }
+}
+.recipe__img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+  height: 100%;
+  width: 100%;
+}
+.recipe__duration {
+  position: absolute;
+  z-index: 9;
+  top: 1.5vw;
+  right: 1.5vw;
+  border-radius: 1.8vw;
+  background-color: #FFD15B;
+  padding: 0.5em 1em;
+  font-size: 0.75;
+}
+.recipe__name {
+  font-size: 1.125rem;
+}
+.recipe h3 {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7A7A7A;
+  margin-bottom: 1em;
+}
+.recipe__description {
+  height: 5.5em;
+  font-size: 0.875rem;
+  overflow: hidden;
+}
+.recipe__ingredients {
+  height: 10em;
+  -moz-columns: 2;
+       columns: 2;
+}
+.recipe__ingredient-item {
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
+}
+.recipe__ingredient {
+  font-size: 0.875rem;
+}
+.recipe__ingredient--quantity {
+  color: grey;
+  font-size: 0.875rem;
+}
+
+.recipe-container {
+  width: 100%;
+  height: 100%;
+}
+.recipe-container__top {
+  overflow: hidden;
+  width: 100%;
+  height: 34.6%;
+  position: relative;
+}
+.recipe-container__bottom {
+  padding: 8.4% 6.5% 16%;
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
+  gap: 2em;
 }/*# sourceMappingURL=card.css.map */

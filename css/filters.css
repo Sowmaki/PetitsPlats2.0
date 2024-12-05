@@ -1,0 +1,121 @@
+* {
+  font-family: "Manrope";
+}
+
+body {
+  margin: 0;
+  background-color: #E5E5E5;
+}
+
+main {
+  background-color: #E5E5E5;
+  padding: 0 7%;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2 {
+  font-family: "Anton";
+  font-weight: 400;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.advanced {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 1em;
+  gap: 9%;
+}
+.advanced__filter {
+  position: relative;
+  background-color: white;
+  border-radius: 11px;
+  padding: 1em;
+  cursor: pointer;
+}
+.advanced__dropdown-menu {
+  background-color: white;
+  border-bottom-left-radius: 11px;
+  border-bottom-right-radius: 11px;
+  display: none;
+  position: absolute;
+  top: 80%;
+  left: 0;
+  width: 100%;
+  max-height: 22vw;
+  background-color: white;
+  z-index: 10;
+  padding: 1em 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+.advanced__dropdown-menu::-webkit-scrollbar {
+  display: none;
+}
+.advanced .active {
+  display: block;
+}
+.advanced__labelNtrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 63px;
+  font-size: 1rem;
+}
+.advanced__searchbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  border: 1px solid #C6C6C6;
+  border-radius: 2px;
+  gap: 1em;
+  padding: 0.5em;
+  margin: 0 1em;
+}
+.advanced__searchbar input {
+  border: none;
+  font-size: 0.875rem;
+  color: #7A7A7A;
+  caret-color: #C6C6C6;
+  outline: none;
+  width: 100%;
+}
+.advanced__searchbar .fa-solid {
+  color: #7A7A7A;
+}
+.advanced__searchbar .fa-xmark {
+  font-size: 0.7rem;
+}
+.advanced__searchbar .loop {
+  height: 0.875rem;
+}
+.advanced__suggestions {
+  margin-top: 1em;
+}
+.advanced__suggestions .suggestion {
+  padding: 0.5em 1em;
+  text-transform: capitalize;
+}
+.advanced__suggestions .suggestion:hover {
+  font-weight: 500;
+  background-color: #FFD15B;
+  background-size: 250%;
+}/*# sourceMappingURL=filters.css.map */

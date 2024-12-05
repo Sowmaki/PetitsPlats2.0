@@ -1,4 +1,5 @@
 import { recipesTemplate } from '../templates/card.js';
+import { uploadRecipesNumber } from './uploadRecipesNumber.js';
 
 export async function getAllRecipes() {
   try {
@@ -73,12 +74,13 @@ export async function getRecipesFromResearch() {
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (!selectedRecipes.length) {
     mainResults.querySelector(".results")?.remove()
-        noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
+    noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
     Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
     noResultDiv.style.display = "block";
   } else {
     noResultDiv.style.display = "none"
     displayRecipesData(selectedRecipes);
+    uploadRecipesNumber()
   }
 }
 

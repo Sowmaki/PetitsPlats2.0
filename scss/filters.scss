@@ -1,0 +1,99 @@
+@import 'commons.scss';
+
+.advanced {
+  @include flex-layout(space-between, center, row);
+  margin-top: 1em;
+  gap: 9%;
+
+  &__filters {}
+
+  &__filter {
+    position: relative;
+    background-color: white;
+    border-radius: 11px;
+    padding: 1em;
+    cursor: pointer;
+  }
+
+  &__dropdown-menu {
+    background-color: white;
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+    display: none;
+    position: absolute;
+    top: 80%;
+    left: 0;
+    width: 100%;
+    max-height: 22vw;
+    background-color: white;
+    z-index: 10;
+    padding: 1em 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+
+
+  .active {
+    display: block;
+  }
+
+  &__labelNtrigger {
+    @include flex-layout(space-between, center, row);
+    gap: 63px;
+    font-size: 1rem;
+  }
+
+  &__searchbar {
+    @include flex-layout(space-between, center, row);
+    border: 1px solid $light-grey;
+    border-radius: 2px;
+    gap: 1em;
+    padding: 0.5em;
+    margin: 0 1em;
+
+    input {
+      border: none;
+      font-size: 0.875rem;
+      color: $grey;
+      caret-color: $light-grey;
+      outline: none;
+      width: 100%;
+    }
+
+    .fa-solid {
+      color: $grey
+    }
+
+    .fa-xmark {
+      font-size: 0.7rem;
+    }
+
+    .loop {
+      height: 0.875rem;
+    }
+
+  }
+
+  &__suggestions {
+    margin-top: 1em;
+
+    .suggestion {
+      padding: 0.5em 1em;
+      text-transform: capitalize;
+
+      &:hover {
+        font-weight: 500;
+        background-color: $main-color;
+        background-size: 250%;
+      }
+    }
+  }
+}
