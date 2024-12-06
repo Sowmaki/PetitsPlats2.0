@@ -21,6 +21,8 @@ filters.forEach(filter => {
   document.addEventListener('click', (event) => {
     if (!dropdown.contains(event.target)) {
       dropdown.classList.remove('active'); // Fermer le menu si clic à l'extérieur
+      // retourner le chevron
+      chevron.style = 'rotate(180deg)'
     }
   });
 

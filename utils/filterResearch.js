@@ -43,6 +43,10 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
       // Ajouter un événement au clic sur chaque suggestion
       suggestion.addEventListener('click', () => {
 
+        // retourner le chevron
+        const filterDOM =
+          dropdownMenu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
+
         // Ajouter une étiquette (label)
         createLabelSearch(suggestion);
 
@@ -136,13 +140,20 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
 
       // Afficher les résultats
       getRecipesFromResearch()
-
     }
   });
+
+  // Application de la fonction update
+  const mainInput = document.getElementById('main-searchbar-input')
+  mainInput.addEventListener('input', (event) => {
+    event.stopPropagation()
+    updateSuggestionsList()
+  })
 
   // Initialisation des suggestions pour ce filtre
   updateSuggestionsList();
 });
+
 
 
 
