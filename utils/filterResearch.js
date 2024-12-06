@@ -109,10 +109,17 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
   });
 
   // Suppression de la saisie
-
+  document.querySelector('.advanced__searchbar').addEventListener('click', (event) => {
+    if (event.target.classList.contains('fa-xmark')) {
+      inputFilter.value = ""
+      updateSuggestionsList()
+    }
+  })
 
   // Gestion des suppressions d'étiquettes
-  document.addEventListener('click', (event) => {
+
+  const labelsSection = document.querySelector('.labels')
+  labelsSection.addEventListener('click', (event) => {
     if (event.target.classList.contains('fa-xmark')) {
       // Récupérer l'élément supprimé
       const removedElement = event.target.closest('.labels__label').innerText.toLowerCase();
