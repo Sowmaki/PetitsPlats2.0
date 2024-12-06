@@ -33,8 +33,6 @@ export async function getRecipesFromResearch() {
   const isInputValid = inputValue.length >= 3; // Vérifier si l'input contient au moins 3 caractères
   const allLabels = document.querySelectorAll('.labels__label'); // Récupérer les étiquettes
   const selectedLabels = [...allLabels].map(label => label.innerText.toLowerCase()); // Convertir en tableau de chaînes en minuscules
-  const allAppliances = [...new Set(allRecipes.flatMap(recipe => recipe.appliance))];
-  const allUstensils = [...new Set(allRecipes.flatMap(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase())))];
 
   function matchesInput(recipe) {
     const nameMatch = recipe.name.toLowerCase().includes(inputValue)
@@ -56,7 +54,6 @@ export async function getRecipesFromResearch() {
         const descriptionMatch = recipe.description.toLowerCase().includes(label)
         const ustensilsMatch = recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(label))
         const applianceMatch = recipe.appliance.toLowerCase().includes(label)
-        console.log(ustensilsMatch);
         return (nameMatch || ingredientMatch || descriptionMatch || ustensilsMatch || applianceMatch)
 
       }) // chaque label doit matcher avec au moins un des trucs.
@@ -67,13 +64,8 @@ export async function getRecipesFromResearch() {
     return matchesInput(recipe) && matchesAllLabels(recipe)
   })
 
-  console.log(selectedRecipes);
-
-
-
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (!selectedRecipes.length) {
-    console.log(selectedRecipes);
     mainResults.querySelector(".results")?.remove()
     noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
     Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
@@ -82,14 +74,13 @@ export async function getRecipesFromResearch() {
     noResultDiv.style.display = "none"
     displayRecipesData(selectedRecipes);
     uploadRecipesNumber()
-    console.log(selectedRecipes)
   }
-}
 
+  return selectedRecipes
+}
 
 input.addEventListener('input', getRecipesFromResearch)
 
-getRecipesFromResearch()
 
 
 

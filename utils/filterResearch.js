@@ -42,14 +42,12 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
 
       // Ajouter un événement au clic sur chaque suggestion
       suggestion.addEventListener('click', () => {
+
         // Ajouter une étiquette (label)
         createLabelSearch(suggestion);
 
         //Mettre à jour les résultats de recherche
         getRecipesFromResearch()
-
-        // Retirer l'élément de `allElements`
-        filter.allElements = filter.allElements.filter(el => el !== element);
 
         // Réafficher les suggestions sans l'élément sélectionné
         updateSuggestionsList();
@@ -68,13 +66,39 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
     }
   }
 
-  function updateSuggestionsList() {
+  async function updateSuggestionsList() {
+    const filteredRecipes = await getRecipesFromResearch();
+    console.log(filteredRecipes);
+    // Génére une nouvelle liste d'éléments pour ce filtre à partir des recettes filtrées
+    const matchingElementsFromRecipes = [...new Set(
+      filteredRecipes.flatMap(recipe => {
+        if (filter.value === 'ingredients') {
+          return recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+        } else if (filter.value === 'appareils') {
+          return recipe.appliance.toLowerCase();
+        } else if (filter.value === 'ustensiles') {
+          return recipe.ustensils.map(ustensil => ustensil.toLowerCase());
+        }
+        return [];
+      })
+    )];
+
+    // Exclure les éléments déjà sélectionnés (labels actifs)
+    const activeLabels = [...document.querySelectorAll('.labels__label')].map(label =>
+      label.innerText.toLowerCase()
+    );
+
+    const availableElements = matchingElementsFromRecipes.filter(el => !activeLabels.includes(el));
+
     const inputValue = filter.input.value.toLowerCase();
-    const matchingElements = filter.allElements.filter(element =>
+
+    // Filtrer les éléments correspondant à l'input
+    const matchingElements = availableElements.filter(element =>
       element.toLowerCase().includes(inputValue)
     );
-    displayFilterList(matchingElements);
 
+    // Affichez uniquement les suggestions pertinentes
+    displayFilterList(matchingElements);
   }
 
   const inputFilter = filter.input;
@@ -83,6 +107,9 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
   inputFilter.addEventListener('input', () => {
     updateSuggestionsList();
   });
+
+  // Suppression de la saisie
+
 
   // Gestion des suppressions d'étiquettes
   document.addEventListener('click', (event) => {
