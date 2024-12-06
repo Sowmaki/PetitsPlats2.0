@@ -32,52 +32,98 @@ export async function getRecipesFromResearch() {
   const inputValue = input.value.toLowerCase(); // Récupérer la valeur de l'input
   const isInputValid = inputValue.length >= 3; // Vérifier si l'input contient au moins 3 caractères
   const allLabels = document.querySelectorAll('.labels__label'); // Récupérer les étiquettes
-  const selectedLabels = [...allLabels].map(label => label.innerText.toLowerCase()); // Convertir en tableau de chaînes en minuscules
+  const selectedLabels = [];
+
+  for (let i = 0; i < allLabels.length; i++) {
+    selectedLabels.push(allLabels[i].innerText.toLowerCase());
+  }
 
   function matchesInput(recipe) {
-    const nameMatch = recipe.name.toLowerCase().includes(inputValue)
-    const ingredientsMatch = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(inputValue))
-    const descriptionMatch = recipe.description.toLowerCase().includes(inputValue)
+    let nameMatch = false;
+    let ingredientsMatch = false;
+    let descriptionMatch = false;
 
     if (isInputValid) {
-      return (nameMatch || ingredientsMatch || descriptionMatch)
+      nameMatch = recipe.name.toLowerCase().includes(inputValue);
+
+      for (let i = 0; i < recipe.ingredients.length; i++) {
+        if (recipe.ingredients[i].ingredient.toLowerCase().includes(inputValue)) {
+          ingredientsMatch = true;
+          break;
+        }
+      }
+
+      descriptionMatch = recipe.description.toLowerCase().includes(inputValue);
+
+      return nameMatch || ingredientsMatch || descriptionMatch;
     } else {
-      return true
+      return true;
     }
   }
 
   function matchesAllLabels(recipe) {
     if (selectedLabels.length) {
-      return selectedLabels.every(label => {
-        const nameMatch = recipe.name.toLowerCase().includes(label)
-        const ingredientMatch = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(label))
-        const descriptionMatch = recipe.description.toLowerCase().includes(label)
-        const ustensilsMatch = recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(label))
-        const applianceMatch = recipe.appliance.toLowerCase().includes(label)
-        return (nameMatch || ingredientMatch || descriptionMatch || ustensilsMatch || applianceMatch)
+      for (let i = 0; i < selectedLabels.length; i++) {
+        const label = selectedLabels[i];
+        let labelMatch = false;
 
-      }) // chaque label doit matcher avec au moins un des trucs.
-    } else { return true }
+        if (recipe.name.toLowerCase().includes(label)) {
+          labelMatch = true;
+        }
+
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+          if (recipe.ingredients[j].ingredient.toLowerCase().includes(label)) {
+            labelMatch = true;
+            break;
+          }
+        }
+
+        if (recipe.description.toLowerCase().includes(label)) {
+          labelMatch = true;
+        }
+
+        for (let j = 0; j < recipe.ustensils.length; j++) {
+          if (recipe.ustensils[j].toLowerCase().includes(label)) {
+            labelMatch = true;
+            break;
+          }
+        }
+
+        if (recipe.appliance.toLowerCase().includes(label)) {
+          labelMatch = true;
+        }
+
+        if (!labelMatch) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
-  const selectedRecipes = allRecipes.filter(recipe => {
-    return matchesInput(recipe) && matchesAllLabels(recipe)
-  })
+  const selectedRecipes = [];
+  for (let i = 0; i < allRecipes.length; i++) {
+    const recipe = allRecipes[i];
+    if (matchesInput(recipe) && matchesAllLabels(recipe)) {
+      selectedRecipes.push(recipe);
+    }
+  }
 
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (!selectedRecipes.length) {
-    mainResults.querySelector(".results")?.remove()
+    mainResults.querySelector(".results")?.remove();
     noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}. 
-    Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
+    Vous pouvez chercher "poisson", "tarte aux pommes", etc.`;
     noResultDiv.style.display = "block";
   } else {
-    noResultDiv.style.display = "none"
+    noResultDiv.style.display = "none";
     displayRecipesData(selectedRecipes);
-    uploadRecipesNumber()
+    uploadRecipesNumber();
   }
 
-  return selectedRecipes
+  return selectedRecipes;
 }
+
 
 input.addEventListener('input', getRecipesFromResearch)
 
