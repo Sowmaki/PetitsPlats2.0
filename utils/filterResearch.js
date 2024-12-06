@@ -117,7 +117,6 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
   })
 
   // Gestion des suppressions d'étiquettes
-
   const labelsSection = document.querySelector('.labels')
   labelsSection.addEventListener('click', (event) => {
     if (event.target.classList.contains('fa-xmark')) {
