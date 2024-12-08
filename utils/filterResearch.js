@@ -10,21 +10,28 @@ const filtersObject = {
     allElements: [...new Set(allRecipes.flatMap(recipe =>
       recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
     ))],
+    filteredElements: [...new Set(allRecipes.flatMap(recipe =>
+      recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
+    ))],
     dropdown: document.getElementById('ingredients-dropdown'),
+    dropdownCallback: null
   },
   appareils: {
     value: 'appareils',
     input: document.getElementById('appareils'),
     allElements: [...new Set(allRecipes.flatMap(recipe => recipe.appliance))],
     dropdown: document.getElementById('appareils-dropdown'),
+    dropdownCallback: null
   },
   ustensiles: {
     value: 'ustensiles',
     input: document.getElementById('ustensiles'),
     allElements: [...new Set(allRecipes.flatMap(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase())))],
     dropdown: document.getElementById('ustensiles-dropdown'),
+    dropdownCallback: null
   }
 };
+
 
 
 Object.entries(filtersObject).forEach(([key, filter]) => {
@@ -44,8 +51,7 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
       suggestion.addEventListener('click', () => {
 
         // retourner le chevron
-        const filterDOM =
-          dropdownMenu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
+        dropdownMenu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
 
         // Ajouter une étiquette (label)
         createLabelSearch(suggestion);
@@ -88,6 +94,8 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
     )];
 
     // Exclure les éléments déjà sélectionnés (labels actifs)
+    console.log(matchingElementsFromRecipes);
+
     const activeLabels = [...document.querySelectorAll('.labels__label')].map(label =>
       label.innerText.toLowerCase()
     );
@@ -134,10 +142,6 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
 
       // Supprimer l'étiquette
       event.target.closest('.labels__label').remove();
-
-      // Mettre à jour la liste des suggestions
-      updateSuggestionsList();
-
       // Afficher les résultats
       getRecipesFromResearch()
     }
