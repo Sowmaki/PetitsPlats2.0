@@ -32,99 +32,98 @@ const filtersObject = {
   }
 };
 
+async function updateSuggestionsList(filter) {
+  const filteredRecipes = await getRecipesFromResearch();
+  console.log(filteredRecipes);
+  // Génére une nouvelle liste d'éléments pour ce filtre à partir des recettes filtrées
+  const matchingElementsFromRecipes = [...new Set(
+    filteredRecipes.flatMap(recipe => {
+      if (filter.value === 'ingredients') {
+        return recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
+      } else if (filter.value === 'appareils') {
+        return recipe.appliance.toLowerCase();
+      } else if (filter.value === 'ustensiles') {
+        return recipe.ustensils.map(ustensil => ustensil.toLowerCase());
+      }
+      return [];
+    })
+  )];
+
+  // Exclure les éléments déjà sélectionnés (labels actifs)
+  console.log(matchingElementsFromRecipes);
+
+  const activeLabels = [...document.querySelectorAll('.labels__label')].map(label =>
+    label.innerText.toLowerCase()
+  );
+
+  const availableElements = matchingElementsFromRecipes.filter(el => !activeLabels.includes(el));
+
+  const inputValue = filter.input.value.toLowerCase();
+
+  // Filtrer les éléments correspondant à l'input
+  const matchingElements = availableElements.filter(element =>
+    element.toLowerCase().includes(inputValue)
+  );
+
+  // Affichez uniquement les suggestions pertinentes
+  displayFilterList(matchingElements, filter);
+}
+
+function displayFilterList(tab, filter) {
+  const dropdownMenu = filter.dropdown;
+  const suggestionsList = document.createElement('ul');
+  suggestionsList.classList.add('advanced__suggestions');
+
+  tab.forEach(element => {
+    const suggestion = document.createElement('li');
+    suggestion.classList.add('suggestion');
+    suggestion.innerText = `${element}`;
+    suggestionsList.appendChild(suggestion);
+
+    // Ajouter un événement au clic sur chaque suggestion
+    suggestion.addEventListener('click', () => {
+
+      // retourner le chevron
+      dropdownMenu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
+
+      // Ajouter une étiquette (label)
+      createLabelSearch(suggestion);
+
+      //Mettre à jour les résultats de recherche
+      getRecipesFromResearch()
+
+      // Réafficher les suggestions sans l'élément sélectionné
+      updateSuggestionsList(filter);
+
+      // Fermer le menu déroulant
+      dropdownMenu.classList.remove('active');
+    });
+  });
+
+  // Gestion de l'affichage des suggestions
+  if (!dropdownMenu.querySelector('.advanced__suggestions')) {
+    dropdownMenu.appendChild(suggestionsList);
+  } else {
+    dropdownMenu.querySelector('.advanced__suggestions').remove();
+    dropdownMenu.appendChild(suggestionsList);
+  }
+}
 
 
 Object.entries(filtersObject).forEach(([key, filter]) => {
-
-  function displayFilterList(tab) {
-    const dropdownMenu = filter.dropdown;
-    const suggestionsList = document.createElement('ul');
-    suggestionsList.classList.add('advanced__suggestions');
-
-    tab.forEach(element => {
-      const suggestion = document.createElement('li');
-      suggestion.classList.add('suggestion');
-      suggestion.innerText = `${element}`;
-      suggestionsList.appendChild(suggestion);
-
-      // Ajouter un événement au clic sur chaque suggestion
-      suggestion.addEventListener('click', () => {
-
-        // retourner le chevron
-        dropdownMenu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
-
-        // Ajouter une étiquette (label)
-        createLabelSearch(suggestion);
-
-        //Mettre à jour les résultats de recherche
-        getRecipesFromResearch()
-
-        // Réafficher les suggestions sans l'élément sélectionné
-        updateSuggestionsList();
-
-        // Fermer le menu déroulant
-        dropdownMenu.classList.remove('active');
-      });
-    });
-
-    // Gestion de l'affichage des suggestions
-    if (!dropdownMenu.querySelector('.advanced__suggestions')) {
-      dropdownMenu.appendChild(suggestionsList);
-    } else {
-      dropdownMenu.querySelector('.advanced__suggestions').remove();
-      dropdownMenu.appendChild(suggestionsList);
-    }
-  }
-
-  async function updateSuggestionsList() {
-    const filteredRecipes = await getRecipesFromResearch();
-    console.log(filteredRecipes);
-    // Génére une nouvelle liste d'éléments pour ce filtre à partir des recettes filtrées
-    const matchingElementsFromRecipes = [...new Set(
-      filteredRecipes.flatMap(recipe => {
-        if (filter.value === 'ingredients') {
-          return recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
-        } else if (filter.value === 'appareils') {
-          return recipe.appliance.toLowerCase();
-        } else if (filter.value === 'ustensiles') {
-          return recipe.ustensils.map(ustensil => ustensil.toLowerCase());
-        }
-        return [];
-      })
-    )];
-
-    // Exclure les éléments déjà sélectionnés (labels actifs)
-    console.log(matchingElementsFromRecipes);
-
-    const activeLabels = [...document.querySelectorAll('.labels__label')].map(label =>
-      label.innerText.toLowerCase()
-    );
-
-    const availableElements = matchingElementsFromRecipes.filter(el => !activeLabels.includes(el));
-
-    const inputValue = filter.input.value.toLowerCase();
-
-    // Filtrer les éléments correspondant à l'input
-    const matchingElements = availableElements.filter(element =>
-      element.toLowerCase().includes(inputValue)
-    );
-
-    // Affichez uniquement les suggestions pertinentes
-    displayFilterList(matchingElements);
-  }
 
   const inputFilter = filter.input;
 
   // Gestion de la saisie dans l'input
   inputFilter.addEventListener('input', () => {
-    updateSuggestionsList();
+    updateSuggestionsList(filter);
   });
 
   // Suppression de la saisie
   document.querySelector('.advanced__searchbar').addEventListener('click', (event) => {
     if (event.target.classList.contains('fa-xmark')) {
       inputFilter.value = ""
-      updateSuggestionsList()
+      updateSuggestionsList(filter)
     }
   })
 
@@ -151,11 +150,11 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
   const mainInput = document.getElementById('main-searchbar-input')
   mainInput.addEventListener('input', (event) => {
     event.stopPropagation()
-    updateSuggestionsList()
+    updateSuggestionsList(filter)
   })
 
   // Initialisation des suggestions pour ce filtre
-  updateSuggestionsList();
+  updateSuggestionsList(filter);
 });
 
 
