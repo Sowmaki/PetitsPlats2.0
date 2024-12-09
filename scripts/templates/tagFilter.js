@@ -1,66 +1,34 @@
-import { createLabelSearch } from "../templates/createLabelsearch.js";
-import { getAllRecipes, getRecipesFromResearch } from "./mainResearch.js";
-
-const allRecipes = await getAllRecipes();
+import { updateApplianceFilter, updateIngredientFilter, updateUstensilFilter } from "../pages/index.js";
+import { createLabelSearch } from "./createLabelsearch.js";
+import { getRecipesFromResearch } from "./mainResearch.js";
 
 const filtersObject = {
   ingredients: {
-    value: 'ingredients',
     input: document.getElementById('ingredients'),
-    allElements: [...new Set(allRecipes.flatMap(recipe =>
-      recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
-    ))],
-    filteredElements: [...new Set(allRecipes.flatMap(recipe =>
-      recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase())
-    ))],
     dropdown: document.getElementById('ingredients-dropdown'),
-    dropdownCallback: null
+    getValue: getIngredients,
+    setValue: updateIngredientFilter,
   },
   appareils: {
-    value: 'appareils',
     input: document.getElementById('appareils'),
-    allElements: [...new Set(allRecipes.flatMap(recipe => recipe.appliance))],
     dropdown: document.getElementById('appareils-dropdown'),
-    dropdownCallback: null
+    getValue: getAppliances,
+    setValue: updateApplianceFilter,
   },
   ustensiles: {
-    value: 'ustensiles',
     input: document.getElementById('ustensiles'),
-    allElements: [...new Set(allRecipes.flatMap(recipe => recipe.ustensils.map(ustensil => ustensil.toLowerCase())))],
     dropdown: document.getElementById('ustensiles-dropdown'),
-    dropdownCallback: null
+    getValue: getUstensils,
+    setValue: updateUstensilFilter,
   }
 };
 
+
 async function updateSuggestionsList(filter) {
-  const filteredRecipes = await getRecipesFromResearch();
-  console.log(filteredRecipes);
-  // Génére une nouvelle liste d'éléments pour ce filtre à partir des recettes filtrées
-  const matchingElementsFromRecipes = [...new Set(
-    filteredRecipes.flatMap(recipe => {
-      if (filter.value === 'ingredients') {
-        return recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase());
-      } else if (filter.value === 'appareils') {
-        return recipe.appliance.toLowerCase();
-      } else if (filter.value === 'ustensiles') {
-        return recipe.ustensils.map(ustensil => ustensil.toLowerCase());
-      }
-      return [];
-    })
-  )];
-
-  // Exclure les éléments déjà sélectionnés (labels actifs)
-  console.log(matchingElementsFromRecipes);
-
-  const activeLabels = [...document.querySelectorAll('.labels__label')].map(label =>
-    label.innerText.toLowerCase()
-  );
-
-  const availableElements = matchingElementsFromRecipes.filter(el => !activeLabels.includes(el));
-
-  const inputValue = filter.input.value.toLowerCase();
 
   // Filtrer les éléments correspondant à l'input
+  const inputValue = filter.input.value.toLowerCase();
+
   const matchingElements = availableElements.filter(element =>
     element.toLowerCase().includes(inputValue)
   );
