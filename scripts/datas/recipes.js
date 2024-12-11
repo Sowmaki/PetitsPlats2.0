@@ -14,6 +14,9 @@ export function filterRecipes(recipes, query, { ingredients, appliances, ustensi
     recipe.ustensils.map(ustensil => ustensil.toLowerCase())
   ))].filter(ustensil => !ustensils.includes(ustensil))
 
+  // Récupère les RECETTES FILTREES ansi que Leurs INGREDIENTS, APPAREILS et USTENSILES
+  // Retourne un objet qui contient toutes ces valeurs.
+
   return {
     filteredSuggestions: {
       ingredients: filteredIngredients,
@@ -24,12 +27,14 @@ export function filterRecipes(recipes, query, { ingredients, appliances, ustensi
   }
 }
 
-
 function getRecipesFromResearch(recipes, query, tagFilters) {
-  const isQueryValid = query.length >= 3; // Vérifier si l'input contient au moins 3 caractères
+  // Vérifie si l'input contient au moins 3 caractères, puis s'il y a des tags.
+  //Si aucun des deux n'existe, récupère toutes les recettes.
+  const isQueryValid = query.length >= 3;
   const hasTags = Object.values(tagFilters).some(tagFilter => tagFilter.length)
   if (!isQueryValid && !hasTags) return recipes
 
+  // Fonction qui vérifie tour à tour dans la RECETTE si le titre, les ingrédients ou la description contiennent la QUERY
   function recipeMatchesInput(recipe) {
     if (!isQueryValid) return true
     const nameMatch = recipe.name.toLowerCase().includes(query)
@@ -38,6 +43,7 @@ function getRecipesFromResearch(recipes, query, tagFilters) {
     return (nameMatch || ingredientsMatch || descriptionMatch)
   }
 
+  // Fonctions qui vérifient si les INGREDIENTS de la RECETTE incluent toutes les TAGS ingrédients, idem pour les APPAREILS et USTENSILES
   const recipeHasEveryIngredients = recipe => tagFilters.ingredients.every(tagIngredient =>
     recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagIngredient)))
   const recipeHasEveryAppliance = recipe => tagFilters.appliances.every(tagAppliance =>
@@ -45,14 +51,16 @@ function getRecipesFromResearch(recipes, query, tagFilters) {
   const recipeHasEveryUstensil = recipe => tagFilters.ustensils.every(tagUstensils =>
     recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tagUstensils)))
 
+  // Fonction qui vérifie ainsi que les 3 fonctionc précédentes retournent TOUTES true
   const recipeMatchesTags = recipe => recipeHasEveryAppliance(recipe) && recipeHasEveryIngredients(recipe) && recipeHasEveryUstensil(recipe)
 
+  // Retourne les recettes qui matchent à la fois avec la QUERY et les TAGS
   return recipes.filter(recipe => recipeMatchesInput(recipe) && recipeMatchesTags(recipe))
 }
 
 export async function fetchRecipes() {
   try {
-    const response = await fetch('datas/recipes.json')
+    const response = await fetch('scripts/datas/recipes.json')
     if (!response.ok) {
       throw new Error('could not fetch data')
     }

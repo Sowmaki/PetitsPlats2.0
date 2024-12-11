@@ -1,28 +1,5 @@
-import { updateApplianceFilter, updateIngredientFilter, updateUstensilFilter } from "../pages/index.js";
+import { filterRecipes } from "../datas/recipes.js";
 import { createLabelSearch } from "./createLabelsearch.js";
-import { getRecipesFromResearch } from "./mainResearch.js";
-
-const filtersObject = {
-  ingredients: {
-    input: document.getElementById('ingredients'),
-    dropdown: document.getElementById('ingredients-dropdown'),
-    getValue: getIngredients,
-    setValue: updateIngredientFilter,
-  },
-  appareils: {
-    input: document.getElementById('appareils'),
-    dropdown: document.getElementById('appareils-dropdown'),
-    getValue: getAppliances,
-    setValue: updateApplianceFilter,
-  },
-  ustensiles: {
-    input: document.getElementById('ustensiles'),
-    dropdown: document.getElementById('ustensiles-dropdown'),
-    getValue: getUstensils,
-    setValue: updateUstensilFilter,
-  }
-};
-
 
 async function updateSuggestionsList(filter) {
 
@@ -58,7 +35,7 @@ function displayFilterList(tab, filter) {
       createLabelSearch(suggestion);
 
       //Mettre à jour les résultats de recherche
-      getRecipesFromResearch()
+      filterRecipes()
 
       // Réafficher les suggestions sans l'élément sélectionné
       updateSuggestionsList(filter);
@@ -110,7 +87,7 @@ Object.entries(filtersObject).forEach(([key, filter]) => {
       // Supprimer l'étiquette
       event.target.closest('.labels__label').remove();
       // Afficher les résultats
-      getRecipesFromResearch()
+      filterRecipes()
     }
   });
 
