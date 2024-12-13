@@ -4,7 +4,7 @@
  */
 export function createTag({ name, onDelete }) {
   const $tag = document.createElement('li')
-  $tag.classList.add('label')
+  $tag.classList.add('labels__label')
   $tag.innerText = name
 
   const $deleteIcon = document.createElement('span')

@@ -1,4 +1,4 @@
-import { createSuggestionList } from "./suggestionList";
+import { createSuggestionList } from "./suggestionList.js";
 
 /**
  * id: string
@@ -23,88 +23,75 @@ import { createSuggestionList } from "./suggestionList";
 
 export function createDropdownFilter({ id, name, suggestions, onSelect }) {
 
+  // ETAT DU COMPOSANT
+
   const query = () => $query.value
+
+
   const isOpen = () => $menu.classList.contains('active')
-  const setIsOpen = myEl.classList.toggle("myClass", myConditionIsMet);
+  const setIsOpen = isOpen => {
+    $menu.classList.toggle("active", isOpen)
+    $chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    isOpen && $dropdown.querySelector('input').focus()
+  };
+
+  const filteredSuggestions = () => suggestions.filter(suggestion => suggestion.includes(query()))
+
+  // CONTENU DU COMPOSANT
 
   const $dropdown = document.createElement('div')
-
   $dropdown.classList.add('advanced__filter')
   $dropdown.setAttribute('tabIndex', '0')
   $dropdown.innerHTML = `
-    <div class="advanced__labelNtrigger">
-      <label for="${id}-query">${name}</label>
-      <span class="fa-solid fa-chevron-down"></span>
-    </div>
-    <div class="advanced__dropdown-menu">
-      <div class="advanced__searchbar">
-        <input type="text" id="${id}-query" minlength="3">
-        <span class="fa-solid fa-xmark"></span>
-        <img src="assets/loop/littleLoop.svg" class="loop" alt="rechercher">
-      </div>
-      <ul class="advanced__suggestions"></ul>
-    </div>
+  <div class="advanced__labelNtrigger">
+  <label for="${id}-query">${name}</label>
+  <span class="fa-solid fa-chevron-down"></span>
+  </div>
+  <div class="advanced__dropdown-menu">
+  <div class="advanced__searchbar">
+  <input type="text" id="${id}-query" minlength="3">
+  <span class="fa-solid fa-xmark"></span>
+  <img src="assets/loop/littleLoop.svg" class="loop" alt="rechercher">
+  </div>
+  </div>
   `
 
-  const $query = $dropdown.querySelector('.advanced__searchbar>input')
   const $menu = $dropdown.querySelector('.advanced__dropdown-menu');
-  const $chevron = $dropdown.querySelector('.fa-chevron-down')
 
-  $chevron.addEventListener('click', (event) => {
-    event.stopPropagation();
-    $menu.classList.toggle('active')
-
-    const isOpen = $menu.classList.contains('active');
-    // Applique la rotation du chevron 
-    $chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-    // Met le focus sur l'input
-    isOpen && $dropdown.querySelector('input').focus()
+  const $query = $dropdown.querySelector('.advanced__searchbar>input')
+  $query.addEventListener('input', () => {
+    $dropdown.querySelector('.advanced__suggestions').remove()
+    $menu.appendChild($suggestionsList())
   })
 
-  document.addEventListener('click', (event) => {
-    if (!$dropdown.contains(event.target)) {
-      $menu.classList.remove('active'); // Fermer le menu si clic à l'extérieur
-      // retourner le chevron
-      $chevron.style = 'rotate(180deg)'
+  const $suggestionsList = () => createSuggestionList({
+    suggestions: filteredSuggestions(),
+    onSelect: (suggestion) => {
+      onSelect(suggestion)
+      setIsOpen(false)
+
+      // createLabelSearch(suggestion);
+
+      // // Mettre à jour les résultats de recherche
+      // filterRecipes()
     }
-  });
+  })
+  $menu.appendChild($suggestionsList())
 
-  const suggestionsList = createSuggestionList({ suggestions, onSelect: (suggestion) => { throw new Error("todo") } })
+  const $chevron = $dropdown.querySelector('.fa-chevron-down')
+  $chevron.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setIsOpen(!isOpen())
+  })
 
+  // Fermer le dropdown si on clique en dehors
+  document.addEventListener('click', (event) => !$dropdown.contains(event.target) && setIsOpen(false));
 
+  // Suppression de la saisie
+  $dropdown.querySelector('.fa-xmark').addEventListener('click', (event) => {
+    inputFilter.value = ""
+    // updateSuggestionsList(filter)
+  })
 
-    // A partir d'ici, tout corriger!!!!!!!
-    .forEach(element => {
-      const suggestion = document.createElement('li');
-      suggestion.classList.add('suggestion');
-      suggestion.innerText = `${element}`;
-      suggestionsList.appendChild(suggestion);
-
-      // Ajouter un événement au clic sur chaque suggestion
-      suggestion.addEventListener('click', () => {
-
-        // retourner le chevron
-        $menu.closest('.advanced__filter').querySelector('.fa-chevron-down').style = 'rotate(180deg)'
-
-        // Ajouter une étiquette (label)
-        createLabelSearch(suggestion);
-
-        //Mettre à jour les résultats de recherche
-        filterRecipes()
-
-        // Réafficher les suggestions sans l'élément sélectionné
-        updateSuggestionsList(filter);
-
-        // Fermer le menu déroulant
-        $menu.classList.remove('active');
-      });
-    });
-
-  // Gestion de l'affichage des suggestions
-  if (!$menu.querySelector('.advanced__suggestions')) {
-    $menu.appendChild(suggestionsList);
-  } else {
-    $menu.querySelector('.advanced__suggestions').remove();
-    $menu.appendChild(suggestionsList);
-  }
+  return $dropdown
 }

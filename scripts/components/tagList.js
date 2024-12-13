@@ -1,11 +1,27 @@
-import { createTag } from "./tag"
+import { updateApplianceFilter, updateIngredientFilter, updateUstensilFilter } from "../pages/index.js";
+import { createTag } from "./tag.js";
 
 /**
  * tags: array<{name: string, onDelete: () => void}>
  */
-export function createTagList({ tags }) {
+export function createTagList(tags) {
+  const { ingredients = [], appliances = [], ustensils = [] } = tags
   const $tagList = document.createElement('ul')
   $tagList.classList.add('labels')
-  tags.forEach(tag => $tagList.appendChild(createTag(tag)))
+  ingredients.forEach(tag => $tagList.appendChild(createTag({
+    name: tag,
+    onDelete: () => updateIngredientFilter(ingredients, tag),
+  })))
+  appliances.forEach(tag => $tagList.appendChild(createTag({
+    name: tag,
+    onDelete: () => updateApplianceFilter(appliances, tag),
+  })))
+  ustensils.forEach(tag => $tagList.appendChild(createTag({
+    name: tag,
+    onDelete: () => updateUstensilFilter(ustensils, tag),
+  })))
   return $tagList
 }
+
+
+//Object { ingredients: (1) […], appliances: (1) […], ustensils: (1) […] }

@@ -1,4 +1,4 @@
-import { createRecipeCard } from "./recipeCard";
+import { createRecipeCard } from "./recipeCard.js";
 
 /**
  * @param {array<recipe>} recipes 
@@ -8,5 +8,6 @@ export function createRecipeCardList(recipes) {
   $recipes.classList.add('results');
 
   recipes.forEach(recipe => $recipes.appendChild(createRecipeCard(recipe)));
+
   return $recipes;
 }

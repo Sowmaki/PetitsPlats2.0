@@ -1,4 +1,4 @@
-import { createSuggestion } from "./suggestion"
+import { createSuggestion } from "./suggestion.js"
 
 /**
  * onSelect: (suggestion: string) => void

@@ -7,7 +7,7 @@ export function filterRecipes(recipes, query, { ingredients, appliances, ustensi
   ))].filter(ingredient => !ingredients.includes(ingredient))
 
   const filteredAppliances = [...new Set(filteredRecipes.flatMap(recipe =>
-    recipe.appliances.map(appliance => appliance.toLowerCase())
+    recipe.appliance.toLowerCase()
   ))].filter(appliance => !appliances.includes(appliance))
 
   const filteredUstensils = [...new Set(filteredRecipes.flatMap(recipe =>
