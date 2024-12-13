@@ -36,11 +36,26 @@ function getRecipesFromResearch(recipes, query, tagFilters) {
 
   // Fonction qui vérifie tour à tour dans la RECETTE si le titre, les ingrédients ou la description contiennent la QUERY
   function recipeMatchesInput(recipe) {
-    if (!isQueryValid) return true
-    const nameMatch = recipe.name.toLowerCase().includes(query)
-    const ingredientsMatch = recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(query))
-    const descriptionMatch = recipe.description.toLowerCase().includes(query)
-    return (nameMatch || ingredientsMatch || descriptionMatch)
+    if (!isQueryValid) return true;
+
+    const lowerCaseQuery = query.toLowerCase();
+
+    // Vérifier le nom
+    let nameMatch = recipe.name.toLowerCase().includes(lowerCaseQuery);
+
+    // Vérifier les ingrédients
+    let ingredientsMatch = false;
+    for (let ingredient of recipe.ingredients) {
+      if (ingredient.ingredient.toLowerCase().includes(lowerCaseQuery)) {
+        ingredientsMatch = true;
+        break;
+      }
+    }
+
+    // Vérifier la description
+    let descriptionMatch = recipe.description.toLowerCase().includes(lowerCaseQuery);
+
+    return nameMatch || ingredientsMatch || descriptionMatch;
   }
 
   // Fonctions qui vérifient si les INGREDIENTS de la RECETTE incluent toutes les TAGS ingrédients, idem pour les APPAREILS et USTENSILES
@@ -55,7 +70,14 @@ function getRecipesFromResearch(recipes, query, tagFilters) {
   const recipeMatchesTags = recipe => recipeHasEveryAppliance(recipe) && recipeHasEveryIngredients(recipe) && recipeHasEveryUstensil(recipe)
 
   // Retourne les recettes qui matchent à la fois avec la QUERY et les TAGS
-  return recipes.filter(recipe => recipeMatchesInput(recipe) && recipeMatchesTags(recipe))
+  const matchingRecipes = [];
+  for (let recipe of recipes) {
+    if (recipeMatchesInput(recipe) && recipeMatchesTags(recipe)) {
+      matchingRecipes.push(recipe);
+    }
+  }
+
+  return matchingRecipes;
 }
 
 export async function fetchRecipes() {
