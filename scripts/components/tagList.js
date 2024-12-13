@@ -22,6 +22,3 @@ export function createTagList(tags) {
   })))
   return $tagList
 }
-
-
-//Object { ingredients: (1) […], appliances: (1) […], ustensils: (1) […] }

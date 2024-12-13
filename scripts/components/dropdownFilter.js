@@ -69,11 +69,6 @@ export function createDropdownFilter({ id, name, suggestions, onSelect }) {
     onSelect: (suggestion) => {
       onSelect(suggestion)
       setIsOpen(false)
-
-      // createLabelSearch(suggestion);
-
-      // // Mettre à jour les résultats de recherche
-      // filterRecipes()
     }
   })
   $menu.appendChild($suggestionsList())
@@ -90,7 +85,6 @@ export function createDropdownFilter({ id, name, suggestions, onSelect }) {
   // Suppression de la saisie
   $dropdown.querySelector('.fa-xmark').addEventListener('click', (event) => {
     inputFilter.value = ""
-    // updateSuggestionsList(filter)
   })
 
   return $dropdown
