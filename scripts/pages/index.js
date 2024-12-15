@@ -105,6 +105,7 @@ export function displayRecipesData() {
   // Afficher les recettes filtrées ou un message si aucune recette n'est trouvée
   if (!filteredRecipes.length) {
     $mainResults.querySelector(".results")?.remove()
+    const inputValue = document.getElementById('main-searchbar-input').value
     $noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}.
     Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
     $noResultDiv.style.display = "block";

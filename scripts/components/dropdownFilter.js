@@ -83,8 +83,9 @@ export function createDropdownFilter({ id, name, suggestions, onSelect }) {
   document.addEventListener('click', (event) => !$dropdown.contains(event.target) && setIsOpen(false));
 
   // Suppression de la saisie
+  const $inputFilter = $dropdown.querySelector('input')
   $dropdown.querySelector('.fa-xmark').addEventListener('click', (event) => {
-    inputFilter.value = ""
+    $inputFilter.value = ""
   })
 
   return $dropdown
