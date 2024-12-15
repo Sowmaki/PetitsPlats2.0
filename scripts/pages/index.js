@@ -109,12 +109,10 @@ export function displayRecipesData() {
     $noResultDiv.innerText = `Aucune recette ne contient ${inputValue ? `"${inputValue}"` : "l'étiquette que vous avez ajoutée"}.
     Vous pouvez chercher "poissson", "tarte aux pommes", etc.`
     $noResultDiv.style.display = "block";
-    console.log('oops');
 
   } else {
     $noResultDiv.style.display = "none"
     updateRecipesNumber()
-    console.log(tagFilters);
   }
 }
 
